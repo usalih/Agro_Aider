@@ -1,0 +1,51 @@
+{% extends "partials/base.html" %}
+
+{% load static %}
+{% block content %}
+
+<section class="ftco-section contact-section bg-light">
+    <div class="container">
+
+        <div class="row block-9">
+            <div class="col-md-6 order-md-last mx-auto">
+              <div class = "heading_s1">
+                <h1 class="mb-10"> Create an Account</h1>
+                <p class="mb-30"> Already Have an Account? <a href="{% url 'userauths:sign-in' %}"> Login </a> </p>
+              </div>
+              {% if form.errors %}
+              <div class="alert alert-danger">
+                <strong>{{form.errors}}</strong>
+              </div>
+              {% endif %}
+                <form action="#" class="bg-white m p-5 contact-form" method="POST">
+                    
+                    {% csrf_token %}
+                           
+                    <div class="form-group" style="display: flex; justify-content: center;">
+                      {{form.username}}
+                    </div>
+
+                    <div class="form-group" style="display: flex; justify-content: center;">
+                      {{form.email}}
+                    </div>
+
+                    <div class="form-group" style="display: flex; justify-content: center;">
+                      {{form.password1}}
+                    </div>
+
+                    <div class="form-group" style="display: flex; justify-content: center;">
+                      {{form.password2}}
+                   </div>
+
+                    <div class="form-group" style="display: flex; justify-content: center;">
+                        <input type="submit" value="Register" class="btn btn-primary py-3 px-5">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section> 
+
+
+
+{% endblock content %}
