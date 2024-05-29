@@ -57,6 +57,7 @@
 
 	        <ul class="navbar-nav ml-auto">
 	          <li class="nav-item active"><a href="{% url 'core:index' %}" class="nav-link">Home</a></li>
+            <li class="nav-item"><a href="{% url 'core:products' %}" class="nav-link">Product</a></li>
 	          <li class="nav-item"><a href="{% url 'core:aboutus' %}" class="nav-link">About</a></li>
 	          <li class="nav-item"><a href="{% url 'core:contact' %}" class="nav-link"><i class="bi bi-person"></i> Contact</a></li> 
 
@@ -105,7 +106,7 @@
               <div class="ftco-footer-widget mb-4 ml-md-5">
                 <h2 class="ftco-heading-2">Menu</h2>
                 <ul class="list-unstyled">
-                  <li><a href="{% url 'core:products-list' %}"class="py-2 d-block">Shop</a></li>
+                  <li><a href="{% url 'core:products' %}"class="py-2 d-block">Product</a></li>
                   <li><a href="{% url 'core:aboutus' %}" class="py-2 d-block">About</a></li>
                   <li><a href="{% url 'core:aboutus' %}" class="py-2 d-block"><i class="fa fa-envelope" aria-hidden="true"></i>Contact Us</a></li>
                 </ul>

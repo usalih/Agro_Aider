@@ -4,9 +4,9 @@ from django.urls import path, include
 from django.conf.urls.static import static
 
 urlpatterns = [
-     path("", include("core.urls")),
+    path("", include("core.urls")),
     path("admin/", admin.site.urls),
-    path("user/", include("userauths.urls"), name="user"),
+    path("user/", include("userauths.urls")),
     path("__debug__/", include("debug_toolbar.urls")),
 ]
 if settings.DEBUG:

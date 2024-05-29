@@ -1,4 +1,5 @@
 from core import models
+from .models import Product
 from django.db.models import Q
 from googletrans import Translator
 from django.contrib.auth.decorators import login_required
@@ -18,12 +19,16 @@ def about_us_view(request):
 def checkout_view(request):
     return render(request, "core/checkout.html")
 
-def get_product_list_view(request):
-    categories = models.Category.objects.all()
-    products = models.Product.objects.filter(product_status="published")
+def product_view(request):
+    categories = ['article', 'video', 'file']
+    products = Product.objects.all()
+    context = {
+        'categories': categories,
+        'products': products,
+    }
+    return render(request, 'core/product.html', context)
 
-    context = {"products": products, "categories": categories}
-    return render(request, "core/shop.html", context)
+#return render(request, "core/product.html",)
 
 
 def single_product_view(request, pid):
@@ -129,3 +134,4 @@ def checkout_order(request):
             item.delete()
     
     return redirect("userauths:index")
+

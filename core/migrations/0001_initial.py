@@ -96,7 +96,7 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('pid', shortuuid.django_fields.ShortUUIDField(alphabet='abcdefg1234', length=10, max_length=20, prefix='prd_', unique=True)),
                 ('title', models.CharField(default='Fresh product.', max_length=100)),
-                ('image', models.ImageField(default='product.jpg', upload_to=core.models.user_directory_path)),
+                ('image', models.ImageField(default='product.jpg', upload_to=core.models.user_file_directory_path)),
                 ('description', models.TextField(blank=True, default='This is a product.', null=True)),
                 ('price', models.DecimalField(decimal_places=2, default='20', max_digits=9999999)),
                 ('old_price', models.DecimalField(decimal_places=2, default='20', max_digits=9999999)),
