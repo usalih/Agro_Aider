@@ -14,11 +14,20 @@ class Product(models.Model):
     name = models.CharField(max_length=255, default='')  # Default to an empty string
     description = models.TextField(default='')  # Default to an empty string
     category = models.CharField(max_length=50, choices=[('article', 'Article'), ('video', 'Video'), ('file', 'File')], default='article')  # Default to 'article'
-    article = models.TextField(null=True, blank=True, default='')  # Default to an empty string
-    video = models.URLField(null=True, blank=True, default='')  # Default to an empty string
+    article = models.TextField(null=True, blank=True, default='input your article')  # Default to an empty string
+    video = models.URLField(null=True, blank=True, default='input the video url here')  # Default to an empty string
     file = models.FileField(upload_to=user_file_directory_path, null=True, blank=True, default='')  # Default to an empty string
-    image = models.ImageField(upload_to='images/', null=True, blank=True, default='')  # Default to an empty string
+    image = models.ImageField(upload_to='images/', default='')  # Default to an empty string
 
     def __str__(self):
         return self.name
 
+class Contact(models.Model):
+    full_name = models.CharField(max_length=255, default='')
+    email = models.EmailField( default='')
+    phone_no = models.CharField(max_length=15,  default='')
+    message = models.TextField( max_length=255, default='')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.full_name

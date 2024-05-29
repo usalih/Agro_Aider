@@ -75,7 +75,7 @@ def contact_view(request):
         message = request.POST["message"]
         phone_no = request.POST["phone_no"]
         full_name = request.POST["full_name"]
-        models.ContactUs.objects.create(
+        models.Contact.objects.create(
             full_name=full_name, email=email, phone_no=phone_no, message=message
         )
 

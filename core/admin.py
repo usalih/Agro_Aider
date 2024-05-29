@@ -9,12 +9,19 @@ class ProductAdmin(admin.ModelAdmin):
     ordering = ('name',)  # Default ordering
     fieldsets = (
         (None, {
-            'fields': ('name', 'description', 'category')
+            'fields': ('name', 'description', 'category', 'image',)
         }),
         ('Content', {
-            'fields': ('article', 'video', 'file', 'image')
+            'fields': ('article', 'video', 'file')
         }),
     )
 
 admin.site.register(Product, ProductAdmin)
 
+from .models import Contact
+
+@admin.register(Contact)
+class ContactAdmin(admin.ModelAdmin):
+    list_display = ('full_name', 'email', 'phone_no','message', 'created_at',)
+    search_fields = ('full_name', 'email', 'phone_no')
+    list_filter = ('created_at',)

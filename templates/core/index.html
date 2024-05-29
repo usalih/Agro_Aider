@@ -97,44 +97,50 @@
         </div>
       </div>
     </div>
-
-    <section id="all">
+    <section class="ftco-section ftco-category ftco-no-pt">
+    <div class="container">
+      <section id="article">
+        <hr/>
         <div class="row">
             {% for product in products %}
-                <div class="col-md-6 col-lg-3 ftco-animate">
-                    <div class="product">
-                        <a class="img-prod">
-                            <img class="img-fluid" src="{{ product.image.url }}" alt="Product Image" />
-                            <div class="overlay"></div>
-                        </a>
-                        <div class="text py-3 pb-4 px-3 text-center">
-                            <h3><a data-toggle="modal" data-target="#articleModal-{{ product.id }}">{{ product.name }}</a></h3>
-                            <p>{{ product.description }}</p>
-                            {% if product.article %}
-                            <p>
-                                <button data-toggle="modal" data-target="#articleModal-{{ product.id }}">Read Article</button>
-                            </p>
-                            {% endif %}
-                            <p>
-                                {% if product.file %}
-                                    <a href="{{ product.file.url }}" target="_blank">Download File</a>
-                                {% endif %}
-                            </p>
-                            {% include 'article_modal.html' with product=product %}
-                            <div class="bottom-area d-flex px-3">
-                                <div class="m-auto d-flex">
-                                    <!-- Add your other buttons or actions here -->
+                    <div class="col-md-6 col-lg-3 ftco-animate">
+                        <div class="product">
+                            <a class="img-prod">
+                                <img class="img-fluid" src="{{ product.image.url }}" alt="Product Image" />
+                                <div class="overlay"></div>
+                            </a>
+                            <div class="text py-3 pb-4 px-3 text-center">
+                                <h3><a href="#articleContent-{{ product.id }}">{{ product.name }}</a></h3>
+                                <p>{{ product.description }}</p>
+                                {% if product.article %}
+                                <p>
+                                    <button onclick="toggleArticle('{{ product.id }}')">Read Article</button>
+                                </p>
+                                <div id="articleContent-{{ product.id }}" style="display: none; width: 1000px; background-color: lightgray; padding: 10px;">
+                                    <p>{{ product.article }}</p>
                                 </div>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
-                </div>
             {% endfor %}
         </div>
     </section>
+    
+    <script>
+    function toggleArticle(id) {
+        var content = document.getElementById('articleContent-' + id);
+        if (content.style.display === "none") {
+            content.style.display = "block";
+        } else {
+            content.style.display = "none";
+        }
+    }
+    </script>
     <p>
-      <a href="{% url 'core:products' %}" class="btn btn-primary">See more .....</a>
+      <a href="{% url 'core:products' %}" class="btn btn-primary"> We Have More For You  .....</a>
     </p>
+    <br/>
 <hr/>
 
   <section class="ftco-section ftco-category ftco-no-pt">

@@ -15,6 +15,8 @@
       </div>
     </div>
   </div>
+  <section class="ftco-section ftco-category ftco-no-pt">
+    <div class="container">
     <h1>Our Products</h1>
     <nav>
         <ul>
@@ -25,44 +27,48 @@
         </ul>
     </nav>
 
-    <section id="all">
-        <h2>All Products</h2>
+    <section id="article">
+        <h2> All Articles</h2>
+        <hr/>
         <div class="row">
             {% for product in products %}
-                <div class="col-md-6 col-lg-3 ftco-animate">
-                    <div class="product">
-                        <a class="img-prod">
-                            <img class="img-fluid" src="{{ product.image.url }}" alt="Product Image" />
-                            <div class="overlay"></div>
-                        </a>
-                        <div class="text py-3 pb-4 px-3 text-center">
-                            <h3><a data-toggle="modal" data-target="#articleModal-{{ product.id }}">{{ product.name }}</a></h3>
-                            <p>{{ product.description }}</p>
-                            {% if product.article %}
-                            <p>
-                                <button data-toggle="modal" data-target="#articleModal-{{ product.id }}">Read Article</button>
-                            </p>
-                            {% endif %}
-                            <p>
-                                {% if product.file %}
-                                    <a href="{{ product.file.url }}" target="_blank">Download File</a>
-                                {% endif %}
-                            </p>
-                            {% include 'article_modal.html' with product=product %}
-                            <div class="bottom-area d-flex px-3">
-                                <div class="m-auto d-flex">
-                                    <!-- Add your other buttons or actions here -->
+                    <div class="col-md-6 col-lg-3 ftco-animate">
+                        <div class="product">
+                            <a class="img-prod">
+                                <img class="img-fluid" src="{{ product.image.url }}" alt="Product Image" />
+                                <div class="overlay"></div>
+                            </a>
+                            <div class="text py-3 pb-4 px-3 text-center">
+                                <h3><a href="#articleContent-{{ product.id }}">{{ product.name }}</a></h3>
+                                <p>{{ product.description }}</p>
+                                {% if product.article %}
+                                <p>
+                                    <button onclick="toggleArticle('{{ product.id }}')">Read Article</button>
+                                </p>
+                                <div id="articleContent-{{ product.id }}" style="display: none; width: 1000px; background-color: lightgray; padding: 10px;">
+                                    <p>{{ product.article }}</p>
                                 </div>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
-                </div>
             {% endfor %}
         </div>
     </section>
-
+    
+    <script>
+    function toggleArticle(id) {
+        var content = document.getElementById('articleContent-' + id);
+        if (content.style.display === "none") {
+            content.style.display = "block";
+        } else {
+            content.style.display = "none";
+        }
+    }
+    </script>
     <section id="article">
         <h2>Articles</h2>
+        <hr/>
         <div class="row">
             {% for product in products %}
                 {% if product.category == 'article' %}
@@ -73,14 +79,16 @@
                                 <div class="overlay"></div>
                             </a>
                             <div class="text py-3 pb-4 px-3 text-center">
-                                <h3><a data-toggle="modal" data-target="#articleModal-{{ product.id }}">{{ product.name }}</a></h3>
+                                <h3><a href="#articleContent-{{ product.id }}">{{ product.name }}</a></h3>
                                 <p>{{ product.description }}</p>
                                 {% if product.article %}
                                 <p>
-                                    <button data-toggle="modal" data-target="#articleModal-{{ product.id }}">Read Article</button>
+                                    <button onclick="toggleArticle('{{ product.id }}')">Read Article</button>
                                 </p>
+                                <div id="articleContent-{{ product.id }}" style="display: none; width: 1000px; background-color: lightgray; padding: 10px;">
+                                    <p>{{ product.article }}</p>
+                                </div>
                                 {% endif %}
-                                {% include 'article_modal.html' with product=product %}
                             </div>
                         </div>
                     </div>
@@ -88,9 +96,20 @@
             {% endfor %}
         </div>
     </section>
-
+    
+    <script>
+    function toggleArticle(id) {
+        var content = document.getElementById('articleContent-' + id);
+        if (content.style.display === "none") {
+            content.style.display = "block";
+        } else {
+            content.style.display = "none";
+        }
+    }
+    </script>
+    
     <section id="video">
-        <h2>Videos</h2>
+        <h2>Videos</h2><hr/>
         <div class="row">
             {% for product in products %}
                 {% if product.category == 'video' %}
@@ -105,7 +124,7 @@
                                 <p>{{ product.description }}</p>
                                 {% if product.video %}
                                 <p>
-                                    <a href="{{ product.video.url }}" target="_blank">Watch Video</a>
+                                    <a href="{{ product.video }}" target="_blank">Watch Video</a>
                                 </p>
                                 {% endif %}
                                 {% include 'article_modal.html' with product=product %}
@@ -118,7 +137,7 @@
     </section>
 
     <section id="file">
-        <h2>Files</h2>
+        <h2>Files</h2><hr/>
         <div class="row">
             {% for product in products %}
                 {% if product.category == 'file' %}
@@ -133,7 +152,7 @@
                                 <p>{{ product.description }}</p>
                                 {% if product.file %}
                                 <p>
-                                    <a href="{{ product.file.url }}" target="_blank">Download File</a>
+                                    <a href="{{ product.file }}" target="_blank">Download File</a>
                                 </p>
                                 {% endif %}
                                 {% include 'article_modal.html' with product=product %}
@@ -144,8 +163,18 @@
             {% endfor %}
         </div>
     </section>
-</div>
-            <input type="text" class="form-control" placeholder="Enter email address" />
+</div>    
+<section class="ftco-section ftco-no-pt ftco-no-pb py-5 bg-light">
+    <div class="container py-4">
+      <div class="row d-flex justify-content-center py-5">
+        <div class="col-md-6">
+          <h2 style="font-size: 22px;" class="mb-0">Subcribe to our Newsletter</h2>
+          <span>Get e-mail updates about our latest shops and special offers</span>
+        </div>
+        <div class="col-md-6 d-flex align-items-center">
+          <form action="#" class="subscribe-form">
+            <div class="form-group d-flex">
+              <input type="text" class="form-control" placeholder="Enter email address" />
               <input type="submit" value="Subscribe" class="submit px-3" />
             </div>
           </form>
@@ -153,4 +182,5 @@
       </div>
     </div>
   </section>
+</section>
 {% endblock %}
