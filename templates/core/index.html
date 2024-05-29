@@ -97,18 +97,8 @@
         </div>
       </div>
     </div>
-    <h1>Our Products</h1>
-    <nav>
-        <ul>
-            <li><a href="#all">All Products</a></li>
-            <li><a href="#article" active >Articles</a></li>
-            <li><a href="#video">Videos</a></li>
-            <li><a href="#file">Files</a></li>
-        </ul>
-    </nav>
 
     <section id="all">
-        <h2>All Products</h2>
         <div class="row">
             {% for product in products %}
                 <div class="col-md-6 col-lg-3 ftco-animate">
@@ -142,91 +132,9 @@
             {% endfor %}
         </div>
     </section>
-
-    <section id="article">
-        <h2>Articles</h2>
-        <div class="row">
-            {% for product in products %}
-                {% if product.category == 'article' %}
-                    <div class="col-md-6 col-lg-3 ftco-animate">
-                        <div class="product">
-                            <a class="img-prod">
-                                <img class="img-fluid" src="{{ product.image.url }}" alt="Product Image" />
-                                <div class="overlay"></div>
-                            </a>
-                            <div class="text py-3 pb-4 px-3 text-center">
-                                <h3><a data-toggle="modal" data-target="#articleModal-{{ product.id }}">{{ product.name }}</a></h3>
-                                <p>{{ product.description }}</p>
-                                {% if product.article %}
-                                <p>
-                                    <button data-toggle="modal" data-target="#articleModal-{{ product.id }}">Read Article</button>
-                                </p>
-                                {% endif %}
-                                {% include 'article_modal.html' with product=product %}
-                            </div>
-                        </div>
-                    </div>
-                {% endif %}
-            {% endfor %}
-        </div>
-    </section>
-
-    <section id="video">
-        <h2>Videos</h2>
-        <div class="row">
-            {% for product in products %}
-                {% if product.category == 'video' %}
-                    <div class="col-md-6 col-lg-3 ftco-animate">
-                        <div class="product">
-                            <a class="img-prod">
-                                <img class="img-fluid" src="{{ product.image.url }}" alt="Product Image" />
-                                <div class="overlay"></div>
-                            </a>
-                            <div class="text py-3 pb-4 px-3 text-center">
-                                <h3><a data-toggle="modal" data-target="#articleModal-{{ product.id }}">{{ product.name }}</a></h3>
-                                <p>{{ product.description }}</p>
-                                {% if product.video %}
-                                <p>
-                                    <a href="{{ product.video.url }}" target="_blank">Watch Video</a>
-                                </p>
-                                {% endif %}
-                                {% include 'article_modal.html' with product=product %}
-                            </div>
-                        </div>
-                    </div>
-                {% endif %}
-            {% endfor %}
-        </div>
-    </section>
-
-    <section id="file">
-        <h2>Files</h2>
-        <div class="row">
-            {% for product in products %}
-                {% if product.category == 'file' %}
-                    <div class="col-md-6 col-lg-3 ftco-animate">
-                        <div class="product">
-                            <a class="img-prod">
-                                <img class="img-fluid" src="{{ product.image.url }}" alt="Product Image" />
-                                <div class="overlay"></div>
-                            </a>
-                            <div class="text py-3 pb-4 px-3 text-center">
-                                <h3><a data-toggle="modal" data-target="#articleModal-{{ product.id }}">{{ product.name }}</a></h3>
-                                <p>{{ product.description }}</p>
-                                {% if product.file %}
-                                <p>
-                                    <a href="{{ product.file.url }}" target="_blank">Download File</a>
-                                </p>
-                                {% endif %}
-                                {% include 'article_modal.html' with product=product %}
-                            </div>
-                        </div>
-                    </div>
-                {% endif %}
-            {% endfor %}
-        </div>
-    </section>
-
+    <p>
+      <a href="{% url 'core:products' %}" class="btn btn-primary">See more .....</a>
+    </p>
 <hr/>
 
   <section class="ftco-section ftco-category ftco-no-pt">
