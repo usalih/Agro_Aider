@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 
 from userauths.models import User
-from core.models import Product
+from core.models import Comment,Reply
 
 
 
@@ -16,4 +16,12 @@ class UserRegisterForm(UserCreationForm):
         model = User
         fields = ['username','email',]
         
-        
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content']
+
+class ReplyForm(forms.ModelForm):
+    class Meta:
+        model = Reply
+        fields = ['content']   

@@ -1,6 +1,6 @@
 from . import models
 from django.contrib import admin
-from .models import Product
+from .models import Product,Comment,Reply
 
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('name', 'category', 'description')  # Fields to display in the list view
@@ -25,3 +25,6 @@ class ContactAdmin(admin.ModelAdmin):
     list_display = ('full_name', 'email', 'phone_no','message', 'created_at',)
     search_fields = ('full_name', 'email', 'phone_no')
     list_filter = ('created_at',)
+
+admin.site.register(Comment)
+admin.site.register(Reply)

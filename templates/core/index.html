@@ -89,129 +89,102 @@
   
   <section class="ftco-section">
     <div class="container">
-      <div class="row justify-content-center mb-3 pb-3">
-        <div class="col-md-12 heading-section text-center ftco-animate">
-          <span class="subheading">Trending Topics</span>
-          <h2 class="mb-4">Available Resources & informations</h2>
-          <p>for fresh, high-quality food informations and guidance,advancement to the agricultural industry as a whole. </p>
+        <div class="row justify-content-center mb-3 pb-3">
+            <div class="col-md-12 heading-section text-center ftco-animate">
+                <span class="subheading">Trending Topics</span>
+                <h2 class="mb-4">Available Resources & informations</h2>
+                <p>for fresh, high-quality food informations and guidance, advancement to the agricultural industry as a whole.</p>
+            </div>
         </div>
-      </div>
     </div>
+
     <section class="ftco-section ftco-category ftco-no-pt">
-    <div class="container">
-      <section id="article">
-        <hr/>
-        <div class="row">
-            {% for product in products %}
-                    <div class="col-md-6 col-lg-3 ftco-animate">
-                        <div class="product">
-                            <a class="img-prod">
-                                <img class="img-fluid" src="{{ product.image.url }}" alt="Product Image" />
-                                <div class="overlay"></div>
-                            </a>
-                            <div class="text py-3 pb-4 px-3 text-center">
-                                <h3><a href="#articleContent-{{ product.id }}">{{ product.name }}</a></h3>
-                                <p>{{ product.description }}</p>
-                                {% if product.article %}
-                                <p>
-                                    <button onclick="toggleArticle('{{ product.id }}')">Read Article</button>
-                                </p>
-                                <div id="articleContent-{{ product.id }}" style="display: none; width: 1000px; background-color: lightgray; padding: 10px;">
-                                    <p>{{ product.article }}</p>
-                                </div>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-            {% endfor %}
-        </div>
-    </section>
-    
-    <script>
-    function toggleArticle(id) {
-        var content = document.getElementById('articleContent-' + id);
-        if (content.style.display === "none") {
-            content.style.display = "block";
-        } else {
-            content.style.display = "none";
-        }
-    }
-    </script>
-    <p>
-      <a href="{% url 'core:products' %}" class="btn btn-primary"> We Have More For You  .....</a>
-    </p>
-    <br/>
-<hr/>
-
-  <section class="ftco-section ftco-category ftco-no-pt">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-8">
-          <div class="row">
-            <div class="col-md-6 order-md-last align-items-stretch d-flex">
-              <div class="category-wrap-2 ftco-animate img align-self-stretch d-flex" style="background-image: url('{% static 'images/category.jpg' %}');">
-                <div class="text text-center">
-                  <h2>Healthy Foods</h2>
-                  <h5>Protect the health of every home</h5>
-                  <p>We contributes to offering technical guidance, providing information, helping farmers determine their problems, unifying 
-                    farmers into farmers’ groups, and exposing them to new technology and teaching them the best farming and management practice. 
-                    </p>
-                  <p>
-                    <a href="{% url 'core:contact' %}" class="btn btn-primary">Contact us now</a>
-                  </p>
-                </div>
+      <div class="container">
+          <section id="article">
+              <hr/>
+              <div class="row">
+                  {% for product in products %}
+                  <div class="col-md-6 col-lg-3 ftco-animate">
+                      <div class="product">
+                          <a class="img-prod">
+                              <img class="img-fluid" src="{{ product.image.url }}" alt="Product Image"/>
+                              <div class="overlay"></div>
+                          </a>
+                          <div class="text py-3 pb-4 px-3 text-center">
+                              <h3><a href="#articleContent-{{ product.id }}">{{ product.name }}</a></h3>
+                              <p>{{ product.description }}</p>
+                              {% if product.article %}
+                              <p>
+                                  <button onclick="toggleArticle('{{ product.id }}')">Read Article</button>
+                              </p>
+                              <div id="articleContent-{{ product.id }}" style="display: none; width: 1000px; background-color: lightgray; padding: 10px;">
+                                  <p>{{ product.article }}</p>
+                              </div>
+                              {% endif %}
+                              
+                              <!-- Comments Section -->
+                              <div id="comments-{{ product.id }}">
+                                  <h4>Comments</h4>
+                                  <!--COMMENT FORM-->
+                                  <form method='post' action="{% url 'add_comment' product.id %}" style = "width: 100px; border: 2pk solid white">
+                                    {% csrf_token %}
+                                   <!-- {{ Comment_form.as_p }} -->
+                                    <input type="text" name="comment" placeholder="Add comments here ..." maxlength="120">
+                                    <button @click="open =false" type="submit">comment</button>
+                                  </form>
+                                  {% for comment in product.comments.all %}
+                                  <div class="comment" style="border: 2px solid black; background-color: #b2beb5; padding: 15px; border-radius: 8px; margin-bottom: 20px; font-family: Arial, sans-serif; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                                    <p style= "font-size:smaller"><strong>{{ comment.user.username }}</strong> @{{ comment.created_at }} :
+                                      <span style="color:black">{{ comment.content }}</span> </p>
+                                       
+                                      <!-- Replies -->
+                                      {% for reply in comment.replies.all %}
+                                      <div style="margin-left: 20px;">
+                                          <p><strong>{{ reply.user.username }}</strong>: {{ reply.content }}</p>
+                                          <p>{{ reply.created_at }}</p>
+                                          
+                                      </div>
+                                      {% endfor %}
+                                      <!-- Reply form -->
+                                      <form method="post" action="forms.py">
+                                          {% csrf_token %}
+                                          {{ reply_form.as_p }}
+                                          <input type="hidden" name="comment_id" value="{{ comment.id }}">
+                                          <button type="submit" name="reply_submit">Reply</button>
+                                      </form>
+                                  </div>
+                                  {% endfor %}
+                              </div>
+                              
+ 
+                          </div>
+                      </div>
+                  </div>
+                  {% endfor %}
               </div>
-            </div>
-            <div class="col-md-6">
-              <div class="category-wrap ftco-animate img mb-4 d-flex align-items-end" style="background-image: url('{% static 'images/category-1.jpg' %}');">
-                <div class="text px-3 py-1">
-                  <h2 class="mb-0"><a href="#">Vegetables</a></h2>
-                </div>
-              </div>
-              <div class="category-wrap ftco-animate img d-flex align-items-end" style="background-image: url('{% static 'images/category-2.jpg' %}');">
-                <div class="text px-3 py-1">
-                  <h2 class="mb-0"><a href="#">Fruits</a></h2>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-4">
-          <div class="category-wrap ftco-animate img mb-4 d-flex align-items-end" style="background-image: url('{% static 'images/category-3.JPG' %}');">
-            <div class="text px-3 py-1">
-              <h2 class="mb-0"><a href="#">Grains</a></h2>
-            </div>
-          </div>
-          <div class="category-wrap ftco-animate img d-flex align-items-end" style="background-image: url('{% static 'images/category-3.JPG' %}');">
-            <div class="text px-3 py-1">
-              <h2 class="mb-0"><a href="#">Fruits</a></h2>
-            </div>
-          </div>
-        </div>
+          </section>
+          <script>
+          function toggleArticle(id) {
+              var content = document.getElementById('articleContent-' + id);
+              if (content.style.display === "none") {
+                  content.style.display = "block";
+              } else {
+                  content.style.display = "none";
+              }
+          }
+          </script>
+          <p>
+              <a href="{% url 'core:products' %}" class="btn btn-primary">We Have More For You ..... </a>
+          </p>
+          <br/>
+          <hr/>
       </div>
-    </div>
   </section>
-  
-  <hr />
+</section>
 
-
-  <section class="ftco-section ftco-no-pt ftco-no-pb py-5 bg-light">
-    <div class="container py-4">
-      <div class="row d-flex justify-content-center py-5">
-        <div class="col-md-6">
-          <h2 style="font-size: 22px;" class="mb-0">Subcribe to our Newsletter</h2>
-          <span>Get e-mail updates about our latest shops and special offers</span>
-        </div>
-        <div class="col-md-6 d-flex align-items-center">
-          <form action="#" class="subscribe-form">
-            <div class="form-group d-flex">
-              <input type="text" class="form-control" placeholder="Enter email address" />
-              <input type="submit" value="Subscribe" class="submit px-3" />
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </section>
+<section class="ftco-section ftco-no-pt ftco-no-pb py-5 bg-light">
+  <div class="container py-4">
+      <!-- Your existing code for the newsletter section -->
+  </div>
+</section>
 {% endblock %}
