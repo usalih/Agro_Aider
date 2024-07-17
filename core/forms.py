@@ -1,18 +1,12 @@
 from django import forms
-from .models import Comment, Reply
+from .models import Comment
 
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
-        fields = ['content']
+        fields = ['content','reply']
         widgets = {
             'content' : forms.Textarea(attrs={'placeholder': 'Add comment ...'}),
-        }
-        labels = {
-            'content': '',
+            'reply': forms.HiddenInput()
         }
 
-class ReplyForm(forms.ModelForm):
-    class Meta:
-        model = Reply
-        fields = ['content']

@@ -1,9 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from userauths.forms import CommentForm, ReplyForm
 from core import models
-from .models import Product, Comment, Reply
-from .forms import CommentForm,ReplyForm
+from .models import Product, Comment
+from .forms import CommentForm
 from django.db.models import Q
 from googletrans import Translator
 
@@ -11,67 +10,48 @@ translator = Translator()
 
 def index(request):
     products = Product.objects.all()
-    comment_form = CommentForm()
-
-
-    if request.method == 'POST':
-        comment_form = CommentForm(data=request.POST)
-        if comment_form.is_valid():
-            new_comment = comment_form.save(commit=False)
-            new_comment.user = request.user
-            product_id = request.POST.get('product_id')
-            new_comment.product = get_object_or_404(Product, id=product_id)
-            new_comment.save()
-            return redirect('index')
+    form = CommentForm()
     
-    return render(request, "core/index.html", {
+    return render(request, 'index', {
         'products': products,
-        'comment_form': comment_form
+        'form': form
     })
     
 # List of all products
 def product_list(request):
     products = Product.objects.all()
     comment_form = CommentForm()
-    reply_form = ReplyForm()
     context = {
         'products': products,
         'comment_form': comment_form,
-        'reply_form': reply_form,
     }
     return render(request, 'index.html', context)
-
+# ON-IT
 # Details of a single product including its comments
-def product_detail(request, pk):
-    product = get_object_or_404(Product, pk=pk)
-    comments = product.comments.all()
-    comment_form = CommentForm()
-    return render(request, 'add_comment.html', {
+def product_detail(request, product_id):
+    product = get_object_or_404(Product, pk=product_id)
+    comments = Comment.objects.filter(product=product, parent=None)
+    form = CommentForm()
+    return render(request, 'index', {
         'product': product,
         'comments': comments,
-        'comment_form': comment_form
+        'form': form
     })
 
 # Adding a new comment to a product
- @login_required
+@login_required
 def add_comment(request, product_id):
-    product = get_object_or_404(Product, id=product_id)
+    product = get_object_or_404(Product, pk=product_id)
 
     if request.method == 'POST':
-        comment_form = CommentForm(data=request.POST)
-        if comment_form.is_valid():
-            new_comment = comment_form.save(commit=False)
-            new_comment.product = product
-            new_comment.user = request.user
-            new_comment.save()
-            return redirect('product_detail', pk=product.id)
-    else:
-        comment_form = CommentForm()
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.product = product
+            comment.save()
+            return redirect('product_detail', product_id=product.id)        
 
-    return render(request, 'core/index.html', {
-        'product': product,
-        'comment_form': comment_form
-    })
+    return redirect('product_detail', product_id=product.id)
 
 
 def comment_sent(request, product_id):
@@ -92,16 +72,20 @@ def comment_sent(request, product_id):
 def add_reply(request, comment_id):
     comment = get_object_or_404(Comment, id=comment_id)
     if request.method == 'POST':
-        form = ReplyForm(request.POST)
+        form = CommentForm(request.POST)
         if form.is_valid():
+            
             reply = form.save(commit=False)
             reply.comment = comment
             reply.user = request.user
-            reply.save()
+            replied = reply.save()
+            comment.replies.append(replied)
+            comment.save()
+            
             return redirect('product_detail', product_id=comment.product.id)
     else:
-        form = ReplyForm()
-    return render(request, 'add_reply.html', {'form': form})
+        form = CommentForm()
+    return render(request, 'core/index.html', {'form': form})
 
 
 def about_us_view(request):

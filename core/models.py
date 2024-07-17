@@ -36,10 +36,11 @@ class Contact(models.Model):
     
 class Comment(models.Model):
     product = models.ForeignKey(Product, related_name='comments', on_delete=models.CASCADE)
+    # comment = models.OneToOneField('self', related_name='parent', on_delete=models.CASCADE)
+    reply = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='replies')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    content = models.TextField()
+    content = models.TextField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
-    id = models.CharField(max_length=100, default= uuid.uuid4 ,unique=True, primary_key=True, editable=False)
 
     def __str__(self):
         try:
@@ -47,11 +48,3 @@ class Comment(models.Model):
         except :
             return f'Commment no author on {self.content}'
         
-class Reply(models.Model):
-    comment = models.ForeignKey(Comment, related_name='replies', on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    content = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f'Reply by {self.user.username} on {self.comment.id}'

@@ -23,9 +23,8 @@ urlpatterns = [
     path("order_summary/", views.checkout_order, name="order_summary"),
     path("place-order/", views.list_page_view, name="place_order"),
     path('article/<int:article_id>/', views.view_article, name='view_article'),
-    path('product/<int:pk>/', views.product_detail, name='product_detail'),
+    path('product/<int:product_id>/', views.product_detail, name='product_detail'),
     path('product/<int:product_id>/add_comment/', views.add_comment, name='add_comment'),
-    path('', views.index, name='index'),
 
 
      # path('add_comment', views.add_comment, name='add_comment'),
